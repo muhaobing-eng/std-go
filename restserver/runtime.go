@@ -2,9 +2,10 @@ package restserver
 
 import (
 	"fmt"
-	"std-go/restserver/config"
-	"std-go/restserver/lib"
-	"std-go/restserver/registry"
+
+	"github.com/muhaobing-eng/std-go/restserver/config"
+	"github.com/muhaobing-eng/std-go/restserver/lib"
+	"github.com/muhaobing-eng/std-go/restserver/registry"
 
 	"github.com/gin-gonic/gin"
 )

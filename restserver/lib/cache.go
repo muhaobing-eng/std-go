@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"std-go/go-common/cache"
-	"std-go/restserver/config"
+	"github.com/muhaobing-eng/std-go/go-common/cache"
+	"github.com/muhaobing-eng/std-go/restserver/config"
 
 	"github.com/go-redis/redis/v8"
 )

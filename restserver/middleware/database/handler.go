@@ -1,8 +1,8 @@
 package database
 
 import (
-	"std-go/go-common/database"
-	"std-go/restserver/lib"
+	"github.com/muhaobing-eng/std-go/go-common/database"
+	"github.com/muhaobing-eng/std-go/restserver/lib"
 
 	"github.com/gin-gonic/gin"
 )

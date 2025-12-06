@@ -1,4 +1,4 @@
-module std-go
+module github.com/muhaobing-eng/std-go
 
 go 1.18
 

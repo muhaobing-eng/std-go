@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"std-go/go-common/cache"
-	"std-go/go-common/database"
+	"github.com/muhaobing-eng/std-go/go-common/cache"
+	"github.com/muhaobing-eng/std-go/go-common/database"
 
 	"gopkg.in/yaml.v3"
 )

@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"std-go/restserver/handler"
+	"github.com/muhaobing-eng/std-go/restserver/handler"
 
 	"github.com/gin-gonic/gin"
 )

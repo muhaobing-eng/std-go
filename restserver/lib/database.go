@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"std-go/go-common/database"
-	"std-go/restserver/config"
+	"github.com/muhaobing-eng/std-go/go-common/database"
+	"github.com/muhaobing-eng/std-go/restserver/config"
 
 	"gorm.io/gorm"
 )

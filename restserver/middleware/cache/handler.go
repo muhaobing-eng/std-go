@@ -1,8 +1,8 @@
 package cache
 
 import (
-	"std-go/go-common/cache"
-	"std-go/restserver/lib"
+	"github.com/muhaobing-eng/std-go/go-common/cache"
+	"github.com/muhaobing-eng/std-go/restserver/lib"
 
 	"github.com/gin-gonic/gin"
 )
