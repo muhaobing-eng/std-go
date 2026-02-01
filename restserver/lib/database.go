@@ -11,7 +11,7 @@ var (
 	dbSingleInstance *gorm.DB
 )
 
-func InitDatabase(cfg config.DatabaseConfig) error {
+func InitDatabase(cfg *config.DatabaseConfig) error {
 	db, err := database.New(cfg.GetDatabaseOption())
 	if err != nil {
 		return err

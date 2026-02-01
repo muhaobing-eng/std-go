@@ -11,11 +11,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// RestserverConfig represents the main restserver configuration section
-type RestserverConfig struct {
-	Server   ServerConfig   `yaml:"restserver.server"`
-	Database DatabaseConfig `yaml:"restserver.database"`
-	Cache    CacheConfig    `yaml:"restserver.cache"`
+type Config struct {
+	Server   ServerConfig    `yaml:"server"`
+	Database *DatabaseConfig `yaml:"database"`
+	Cache    *CacheConfig    `yaml:"cache"`
 }
 
 type ServerConfig struct {
@@ -65,12 +64,34 @@ const (
 	ConfigPathEnvName = "STD_REST_CONF_PATH"
 
 	defaultConfigPath = "./conf/restserver.yaml"
+
+	restServerPrefix = "restserver"
 )
 
-var globalConfig *RestserverConfig
+var globalConfig *Config
+
+func Get() *Config {
+	if globalConfig == nil {
+		panic("config not loaded, call Load() first")
+	}
+	return globalConfig
+}
 
 // Load loads configuration from file specified by environment variable or default path
-func Load() (*RestserverConfig, error) {
+func Load() (*Config, error) {
+	conf := new(Config)
+	if err := LoadWithPrefix(restServerPrefix, conf); err != nil {
+		return nil, err
+	}
+	globalConfig = conf
+	return globalConfig, nil
+}
+
+func LoadWithPrefix(prefix string, conf interface{}) error {
+	if prefix == "" {
+		return fmt.Errorf("prefix is empty")
+	}
+
 	configPath := os.Getenv(ConfigPathEnvName)
 	if configPath == "" {
 		configPath = defaultConfigPath
@@ -78,46 +99,23 @@ func Load() (*RestserverConfig, error) {
 
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read config file %s: %w", configPath, err)
+		return fmt.Errorf("failed to read config file %s: %w", configPath, err)
 	}
 
-	var config RestserverConfig
-	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to parse config file %s: %w", configPath, err)
+	var rawConfig map[string]interface{}
+	if err = yaml.Unmarshal(data, &rawConfig); err != nil {
+		return fmt.Errorf("failed to parse config file %s: %w", configPath, err)
 	}
-
-	// Set default values if not specified
-	if config.Server.Port == 0 {
-		config.Server.Port = 8080
+	prefixData, ok := rawConfig[prefix]
+	if !ok {
+		return fmt.Errorf("prefix '%s' not found in config file %s", prefix, configPath)
 	}
-
-	if config.Database.IP == "" {
-		config.Database.IP = "127.0.0.1"
+	prefixBytes, err := yaml.Marshal(prefixData)
+	if err != nil {
+		return fmt.Errorf("failed to marshal prefix section: %w", err)
 	}
-	if config.Database.Port == 0 {
-		config.Database.Port = 3306
+	if err = yaml.Unmarshal(prefixBytes, conf); err != nil {
+		return fmt.Errorf("failed to parse prefix section '%s': %w", prefix, err)
 	}
-	if config.Database.User == "" {
-		config.Database.User = "root"
-	}
-	if config.Database.Other == "" {
-		config.Database.Other = "charset=utf8&parseTime=True&loc=Local"
-	}
-
-	if config.Cache.Host == "" {
-		config.Cache.Host = "127.0.0.1"
-	}
-	if config.Cache.Port == 0 {
-		config.Cache.Port = 6379
-	}
-
-	globalConfig = &config
-	return &config, nil
-}
-
-func Get() *RestserverConfig {
-	if globalConfig == nil {
-		panic("config not loaded, call Load() first")
-	}
-	return globalConfig
+	return nil
 }

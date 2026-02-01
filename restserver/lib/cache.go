@@ -11,7 +11,7 @@ var (
 	cacheSingleInstance *redis.Client
 )
 
-func InitCache(cfg config.CacheConfig) error {
+func InitCache(cfg *config.CacheConfig) error {
 	cache, err := cache.New(cfg.GetCacheOption())
 	if err != nil {
 		return err

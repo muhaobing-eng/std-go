@@ -18,8 +18,16 @@ func Init(registries ...registry.Registry) error {
 	if err != nil {
 		return err
 	}
-	lib.InitDatabase(cfg.Database)
-	lib.InitCache(cfg.Cache)
+	if cfg.Database != nil {
+		if err = lib.InitDatabase(cfg.Database); err != nil {
+			return err
+		}
+	}
+	if cfg.Cache != nil {
+		if err = lib.InitCache(cfg.Cache); err != nil {
+			return err
+		}
+	}
 
 	// init rest server
 	server = gin.New()
