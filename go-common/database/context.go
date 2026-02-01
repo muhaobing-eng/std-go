@@ -21,3 +21,10 @@ func FromContext(ctx context.Context) *gorm.DB {
 	}
 	return client
 }
+
+func Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
+	return FromContext(ctx).Transaction(func(tx *gorm.DB) error {
+		ctx = Context(ctx, tx)
+		return fn(ctx)
+	})
+}
