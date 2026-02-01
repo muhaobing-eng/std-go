@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func sum(elems ...int) int {
 	var sum int
 	for _, elem := range elems {
@@ -78,14 +76,4 @@ func numMagicSquaresInside(grid [][]int) int {
 		}
 	}
 	return 1
-}
-
-func main() {
-	grid := [][]int{
-		{7, 1, 4, 5, 6},
-		{2, 5, 1, 6, 4},
-		{1, 5, 4, 3, 2},
-		{1, 2, 7, 3, 4},
-	}
-	fmt.Println(numMagicSquaresInside(grid))
 }
